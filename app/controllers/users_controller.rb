@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :basic_auth, only: [:show, :update]
+  before_action :basic_auth, only: [:show, :update, :destroy]
 
   def index
     users = User.all
@@ -23,6 +23,12 @@ class UsersController < ApplicationController
   def update
     @current_user.update(user_params.slice(:nickname, :comment))
     render json: {user: @current_user}
+  end
+
+  def destroy
+    @current_user.destroy
+    users = User.all
+    render json: {users: users}
   end
 
   private
