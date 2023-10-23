@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :basic_auth, only: [:show]
+  before_action :basic_auth, only: [:show, :update]
 
   def index
     users = User.all
@@ -20,10 +20,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def update
+    @current_user.update(user_params.slice(:nickname, :comment))
+    render json: {user: @current_user}
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:user_id, :password)
+    params.require(:user).permit(:user_id, :password, :nickname, :comment)
   end
 
   private
